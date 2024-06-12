@@ -24,7 +24,7 @@ Keybind format is
 <modifier_key>+key : vk_code
 ```
 
-You can use  [[ [this table](https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes)]] to find codes.
+You can use [this table](https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes) to find codes.
 
 For some simple media keys:
 ```
