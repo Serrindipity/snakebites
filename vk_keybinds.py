@@ -157,7 +157,7 @@ key_to_code = {v: k for k, v in keycode_dictionary.items()}
 keyb = keyboard.Controller()
 
 # Which print statements should be displayed?
-verbosity = 1
+verbosity = 0
 bind_file = 'keybinds.cfg'
 
 def check_print(statement, verbosity_level=1):
