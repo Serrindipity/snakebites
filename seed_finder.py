@@ -4,15 +4,15 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 # Possible search values:
-# Stats: items, hp, gold_all, places_visited, projectiles_shot
-# Kills: Stats -> kills
+# Stats: items, heart_containers, gold_all, places_visited, projectiles_shot
+# hp and heart_containers don't seem to work
 
 def make_parsed_args():
         
         parser = argparse.ArgumentParser(prog = f"{Path(__file__).name}", description=des)
         parser.add_argument("-f", "--folder", type=str, help = "Filepath to session folder", default = r'c:\Users\jonqu\AppData\LocalLow\Nolla_Games_Noita\save00\stats\sessions')
         parser.add_argument('-l', "--limit", type=int, help = "Maximum number of seeds to return", default = 3)
-        parser.add_argument('-s', '--search', type=str, help="Type of thing to look for")
+        parser.add_argument('-s', '--search', type=str, help="Type of thing to look for", default='kills')
         
         parsed = parser.parse_args()
         return parsed
@@ -41,13 +41,16 @@ def build_dictionary(kills_file, stats_file):
 # Parses a kill or stat xml document, takes a pathlib argument. Returns search value, seed
 def parse_xml(file_tuple, search):
     d = build_dictionary(file_tuple[0], file_tuple[1])
+    search_value = d[search]
     seed = d["world_seed"]
-    return seed
+    return search_value, seed
 
 if __name__ == "__main__":
-    print("running")
     args = make_parsed_args()
     files_to_parse = get_stat_files(args.folder)
+    sort_list = []
     for tup in files_to_parse:
-         parse_xml(tup, args.search)
-         break
+         sort_list.append(parse_xml(tup, args.search))
+    sort_list.sort(key=lambda x : int(x[0]), reverse=True)
+    for i in sort_list[0 : args.limit]:
+        print(f'{args.search}: {i[0]} , seed: {i[1]}')
