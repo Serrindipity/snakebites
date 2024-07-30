@@ -29,33 +29,25 @@ def get_stat_files(dir_path):
            out.append(zipped)
       return out
 
+# Builds the dictionary of search items out of the target files.
+def build_dictionary(kills_file, stats_file):
+     # Copies the stats file first, since it's bigger.
+     stats_tree = ET.parse(stats_file)
+     d = stats_tree.find('stats').attrib.copy()
+     kills_tree = ET.parse(kills_file)
+     d['kills'] = kills_tree.getroot().attrib['kills']
+     return d
+
 # Parses a kill or stat xml document, takes a pathlib argument. Returns search value, seed
-def parse_xml(file, search):
-    for type in stat_types:
-          if type.value in str(file):
-                parse_type = type
-    assert parse_type
-    tree = ET.parse(file)
-    print(parse_type)
-    return_list = []
-    match parse_type:
-        case stat_types.STATS:
-            attrs = tree.find('stats').attrib
-            
-            
-            
-        case stat_types.KILLS:
-            # Kills parse
-            print("parsing kills xml")
-    
-    seed = attrs["world_seed"]
+def parse_xml(file_tuple, search):
+    d = build_dictionary(file_tuple[0], file_tuple[1])
+    seed = d["world_seed"]
     return seed
 
 if __name__ == "__main__":
     print("running")
     args = make_parsed_args()
     files_to_parse = get_stat_files(args.folder)
-    print(files_to_parse)
-    # for file in files_to_parse:
-    #      parse_xml(file, args.search)
-    #      break
+    for tup in files_to_parse:
+         parse_xml(tup, args.search)
+         break
