@@ -37,7 +37,7 @@ For some simple media keys:
 ## Seed Finder
 A tool for the roguelike NOITA that allows searching through a sessions folder for world seeds based on search parameters.
 ```bash
-python3 seed_finder.py [-h] [-f FOLDER] [-l LIMIT] [-s SEARCH]
+python3 seed_finder.py [-h] -f FOLDER [-l LIMIT] [-s SEARCH]
 ```
 Possible search queries include
 - items
