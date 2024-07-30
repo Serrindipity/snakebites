@@ -33,3 +33,18 @@ For some simple media keys:
 <alt>+k : 176
 <ctrl>+<alt>+q : quit
 ```
+
+## Seed Finder
+A tool for the roguelike NOITA that allows searching through a sessions folder for world seeds based on search parameters.
+```bash
+python3 seed_finder.py [-h] [-f FOLDER] [-l LIMIT] [-s SEARCH]
+```
+Possible search queries include
+- items
+- heart_containers
+- gold_all
+- places_visited
+- projectiles_shot
+
+> [!NOTE]
+> "heart_containers" and "hp" search fields seem to not be working, as every tested file had a measure of 0.

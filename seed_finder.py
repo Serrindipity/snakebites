@@ -10,8 +10,8 @@ import xml.etree.ElementTree as ET
 def make_parsed_args():
         
         parser = argparse.ArgumentParser(prog = f"{Path(__file__).name}", description=des)
-        parser.add_argument("-f", "--folder", type=str, help = "Filepath to session folder", default = r'c:\Users\jonqu\AppData\LocalLow\Nolla_Games_Noita\save00\stats\sessions')
-        parser.add_argument('-l', "--limit", type=int, help = "Maximum number of seeds to return", default = 3)
+        parser.add_argument("-f", "--folder", type=str, help = "Filepath to session folder", required=True)
+        parser.add_argument('-l', "--limit", type=int, help = "Maximum number of seeds to return. -1 is no limit.", default = 3)
         parser.add_argument('-s', '--search', type=str, help="Type of thing to look for", default='kills')
         
         parsed = parser.parse_args()
