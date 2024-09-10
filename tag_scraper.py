@@ -18,6 +18,7 @@ def make_parsed_args():
         
         parser.add_argument("-t", "--tag", type=str, help = "tag to scrape, if not specified, it just grabs text.")
         parser.add_argument("-s", "--saveto", help = f"filepath to save HTML document to. If unspecified, saves to '{default_save}'")
+        parser.add_argument("-e", "--header", type=dict, nargs = "?", help="Header to make request with. Defaults to {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}", const= {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'})
         
         return parser.parse_args()
 
@@ -58,17 +59,27 @@ def main():
             parse_html(html, tag_to_scrape)
     # Else makes the get request
     else:
-        try:
-            print("Making request")
-            headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
-            response = requests.get(url, headers=headers)
-            response.encoding = response.apparent_encoding
-            response.raise_for_status()
-        except:
-            print("Something went wrong when making a request.")
-            print(f"Status code: {response.status_code}")
+        if args.header:
+            try:
+                print("Making request with headers")
+                response = requests.get(url, headers=args.header)
+                response.encoding = response.apparent_encoding
+                response.raise_for_status()
+            except:
+                print("Something went wrong when making a request.")
+                print(f"Status code: {response.status_code}")
+                quit()
         else:
-            print(response.text)
-            parse_html(response.text, tag_to_scrape)
+            try:
+                response = requests.get(url)
+                response.encoding = response.apparent_encoding
+                response.raise_for_status()
+            except:
+                print("Something went wrong when making a request.")
+                print(f"Status code: {response.status_code}")
+                quit()
+            
+            # print(response.text)
+        parse_html(response.text, tag_to_scrape)
 if __name__ == "__main__":
     main()
